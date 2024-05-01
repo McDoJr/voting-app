@@ -42,7 +42,7 @@ class DataQuery {
         });
     }
 
-    removeByField = (table, field, value, callback) => {
+    removeOneByField = (table, field, value, callback) => {
         let sql = `DELETE FROM ${table} WHERE ${field} = ?`;
         this.db.query(sql, value, (error, result) => {
            if(error) throw error;

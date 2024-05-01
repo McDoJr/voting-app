@@ -1,8 +1,9 @@
 import {DataContext} from "./utils/context.js";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Registration from "./pages/auth/registration.jsx";
-import Login from "./pages/auth/login.jsx";
+import RegistrationPage from "./pages/auth/registration-page.jsx";
+import LoginPage from "./pages/auth/login-page.jsx";
 import {form} from "./components/data.js";
+import SignupPage from "./pages/auth/signup-page.jsx";
 
 
 const App = () => {
@@ -13,9 +14,10 @@ const App = () => {
         <DataContext.Provider value={null}>
             <BrowserRouter>
                 <Routes>
-                    <Route index element={<Registration/>}/>
-                    <Route path="/register" element={<Registration/>}/>
-                    <Route path="/login" element={<Login/>}/>
+                    <Route index element={<RegistrationPage/>}/>
+                    <Route path="/register" element={<RegistrationPage/>}/>
+                    <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="/signup" element={<SignupPage/>}/>
                 </Routes>
             </BrowserRouter>
         </DataContext.Provider>

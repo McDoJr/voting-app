@@ -9,13 +9,15 @@ export default {
     extend: {
       colors: {
         primary: "#3EC6FF",
-        secondary: "#C0C0C0"
+        secondary: "#C0C0C0",
+        "dark-blue": "#032D6C"
       },
       fontFamily: {
         inter: "Inter"
       },
       backgroundImage: {
         "fsuu-bg": "url('/src/assets/fsuu_bg.png')",
+        "fsuu-cover": "url('/src/assets/fsuu_cover.png')",
         "fsuu-logo": "url('/src/assets/fsuu_logo.png')"
       }
     },

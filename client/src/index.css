@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+    border: 2px solid #3EC6FF;
+    outline: none;
+    padding: 12px 64px;
+    background-color: #3EC6FF;
+    border-radius: 50px;
+    font-size: 35px;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #c8ecff;
+    border: 2px solid #3EC6FF;
+}

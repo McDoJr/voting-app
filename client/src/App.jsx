@@ -15,7 +15,7 @@ const App = () => {
         <DataContext.Provider value={null}>
             <BrowserRouter>
                 <Routes>
-                    <Route index element={<RegistrationPage/>}/>
+                    <Route index element={<SigninPage/>}/>
                     <Route path="/register" element={<RegistrationPage/>}/>
                     <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/signup" element={<SignupPage/>}/>

@@ -1,8 +1,8 @@
 import {useState} from "react";
 
-export const form = () => {
+export const form = (data = {}) => {
 
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState(data);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -10,4 +10,11 @@ export const form = () => {
     }
 
     return {formData, setFormData, handleChange};
+}
+
+export const validate = (formData) => {
+    for(let data in formData) {
+        if(data === "") return true;
+    }
+    return false;
 }

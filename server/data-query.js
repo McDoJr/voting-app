@@ -1,54 +1,76 @@
-class DataQuery {
-    constructor(db) {
-        this.db = db;
-    }
+class DataTable {
 
-    setTable = (table) => {
+    constructor(db, table) {
+        this.db = db;
         this.table = table;
     }
 
-    findAll = (table, callback) => {
-        let sql = `SELECT * FROM ${table}`;
+    findAll = (callback) => {
+        let sql = `SELECT * FROM ${this.table}`;
         this.db.query(sql, (error, result) => {
            if(error) throw error;
            return callback(result);
         });
     }
 
-    insertData = (fields, values, callback) => {
-
-        const sql = `INSERT INTO voters (${fields.join(',')}) VALUES (?)`;
-
-        this.db.query(sql, [values], (error, result) => {
+    insert = (datas, callback) => {
+        const sql = `INSERT INTO ${this.table} (${Object.keys(datas).join(',')}) VALUES (?)`;
+        this.db.query(sql, [Object.values(datas)], (error, result) => {
             if(error) throw error;
             return callback(result);
         });
     }
 
-    // Retrieve data by using 2 fields (ex. username and password)
-    findOneByFields = (table, fields, values, callback) => {
-        let sql = `SELECT * FROM ${table} WHERE ${fields[0]} = ? AND ${fields[1]} = ?`;
-        this.db.query(sql, values, (error, result) => {
+    findSome = (datas, callback) => {
+        let conditions = `${Object.keys(datas)
+            .map((data, index) => {
+                return index === 0 ? `${data} = ?` : ` AND ${data} = ?`;
+            })
+            .join("")}`;
+        let sql = `SELECT * FROM ${this.table} WHERE ${conditions}`;
+        this.db.query(sql, Object.values(datas), (error, result) => {
             if(error) throw error;
+            return callback(result);
+        });
+    }
+
+    findOne = (datas, callback) => {
+        this.findSome(datas, (result) => {
             return callback(result[0]);
+        });
+    }
+
+    delete = (datas, callback) => {
+        let conditions = `${Object.keys(datas)
+            .map((data, index) => {
+                return index === 0 ? `${data} = ?` : ` AND ${data} = ?`;
+            })
+            .join("")}`;
+        let sql = `DELETE FROM ${this.table} WHERE ${conditions}`;
+        this.db.query(sql, Object.values(datas), (error, result) => {
+            if(error) throw error;
+            return callback(result);
         })
     }
 
-    findOneByField = (table, field, value, callback) => {
-        let sql = `SELECT * FROM ${table} WHERE ${field} = ?`;
-        this.db.query(sql, value, (error, result) => {
+    update = (datas, conditions, callback) => {
+        let values = [...Object.values(datas), ...Object.values(conditions)]
+        let condition = `${Object.keys(conditions)
+            .map((data, index) => {
+                return index === 0 ? `${data} = ?` : ` AND ${data} = ?`;
+            })
+            .join("")}`;
+        let updates = `${Object.keys(datas)
+            .map((data, index) => {
+                return `${data} = ?`;
+            })
+            .join(",")}`;
+        let sql = `UPDATE ${this.table} SET ${updates} WHERE ${condition}`;
+        this.db.query(sql, values, (error, result) => {
             if(error) throw error;
-            return callback(result[0]);
-        });
-    }
-
-    removeOneByField = (table, field, value, callback) => {
-        let sql = `DELETE FROM ${table} WHERE ${field} = ?`;
-        this.db.query(sql, value, (error, result) => {
-           if(error) throw error;
-           return callback(result);
-        });
+            return callback(result);
+        })
     }
 }
 
-module.exports = DataQuery;
+module.exports = DataTable;

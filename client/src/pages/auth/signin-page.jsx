@@ -1,13 +1,12 @@
 import Header from "../../components/header.jsx";
-import SignupForm from "./signup-form.jsx";
+import SigninForm from "./signin-form.jsx";
 
-const SignupPage = () => {
-
+const SigninPage = () => {
     return (
         <section className="w-full h-screen flex flex-col items-center bg-fsuu-cover bg-cover bg-center">
             <Header/>
-            <SignupForm/>
+            <SigninForm/>
         </section>
     )
 }
-export default SignupPage;
+export default SigninPage;

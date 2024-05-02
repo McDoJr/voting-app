@@ -10,7 +10,8 @@ export default {
       colors: {
         primary: "#3EC6FF",
         secondary: "#C0C0C0",
-        "dark-blue": "#032D6C"
+        "dark-blue": "#032D6C",
+        placeholder: "#a9a3b7"
       },
       fontFamily: {
         inter: "Inter"

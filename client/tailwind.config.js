@@ -14,12 +14,15 @@ export default {
         placeholder: "#a9a3b7"
       },
       fontFamily: {
-        inter: "Inter"
+        inter: "Inter",
+        consolas: "Consolas",
+        prompt: "Prompt"
       },
       backgroundImage: {
         "fsuu-bg": "url('/src/assets/fsuu_bg.png')",
         "fsuu-cover": "url('/src/assets/fsuu_cover.png')",
-        "fsuu-logo": "url('/src/assets/fsuu_logo.png')"
+        "fsuu-logo": "url('/src/assets/fsuu_logo.png')",
+        university: "url('/src/assets/university.jpg')"
       }
     },
   },

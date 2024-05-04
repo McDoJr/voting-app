@@ -1,68 +1,95 @@
-import {form, signinForm} from "../../components/data.js";
+import {form, signinForm, validateForm} from "../../components/data.js";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {useState} from "react";
-import Popup from "../../components/popup.jsx";
+import {popupForm} from "../../components/popup.jsx";
 import PasswordViewer from "../../components/password-viewer.jsx";
+import Loading from "../../components/loading.jsx";
+import {errorForm} from "../../components/error.jsx";
+import Logo from "../../assets/fsuu_logo.png";
+import {HOST} from "../../hooks/auth-hooks.js";
 
 const SigninForm = () => {
 
-    const [popup, setPopup] = useState({
-        state: false,
-        status: false
-    });
-    const [passA, setPassA] = useState(false);
-    const {formData, setFormData, handleChange} = signinForm();
+    const {popup, setPopup, handlePopup, getView, closePopup} = popupForm();
+    const [loading, setLoading] = useState(false);
+    const [passViewer, setPassViewer] = useState({password: false});
+    const {formData, setFormData, handleChange: onChange} = signinForm();
+    const {errors, setErrors, checkErrors, getLabel, isVisible} = errorForm();
+
+    const handleChange = (e) => {
+        onChange(e);
+        checkErrors(e.target.name);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const {email, password} = formData;
-        if(email === "admin") {
-            if(password === "1234") {
-                setPopup({state: true, status: true});
-                setTimeout(() => setPopup({state: false, status: false}), 1500);
-            } else {
-                setPopup({state: true, status: false});
-                setTimeout(() => setPopup({state: false, status: false}), 1500);
-            }
-            return;
-        }
-        axios.post('http://localhost:8081/login', formData)
-            .then(res => {
-                const {data} = res.data;
-                if(data) {
-                    setPopup({state: true, status: true});
-                    setTimeout(() => setPopup({state: false, status: false}), 1500);
+        const errors = validateForm(formData);
+        if(Object.keys(errors).length > 0) {
+            setErrors(errors);
+        }else {
+            setLoading(true);
+            const {email, password} = formData;
+            if(email === "admin") {
+                if(password === "1234") {
+                    handlePopup(true, true, "Login successfully!");
+                    setTimeout(() => closePopup(), 1500);
                 } else {
-                    setPopup({state: true, status: false});
-                    setTimeout(() => setPopup({state: false, status: false}), 1500);
+                    handlePopup(true, false, "Invalid admin password!");
+                    setTimeout(() => closePopup(), 1500);
                 }
-            })
-            .catch(error => alert("Error!"))
+            }else {
+                axios.post(`${HOST}/login`, formData)
+                    .then(res => {
+                        const {status, data, message} = res.data;
+                        if(status) {
+                            handlePopup(true, true, message);
+                            setTimeout(() => closePopup(), 1500);
+                        } else {
+                            handlePopup(true, false, message);
+                            setTimeout(() => closePopup(), 1500);
+                        }
+                        setLoading(false);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
+            setLoading(false);
+        }
     }
 
     return (
         <>
             <form
                 onSubmit={handleSubmit}
-                className="flex flex-col justify-center items-center bg-white py-6 px-16 my-auto rounded-md shadow-lg shadow-gray-700">
+                className="flex flex-col justify-center items-center bg-white py-6 px-16 my-auto">
+                <img src={Logo} alt="Logo.png" className="w-24 mb-3"/>
                 <h1 className="text-3xl font-bold text-dark-blue mb-6">SIGN IN</h1>
-                <input type="text" placeholder="Email Address" name="email"
-                       onChange={handleChange}
-                       className="w-[220px] border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
-                <div className="w-full relative">
-                    <input type={passA ? "text" : "password"} placeholder="Password" name="password"
+                <div className="w-full flex flex-col relative">
+                    {isVisible("email") && getLabel("email")}
+                    <input type="text" placeholder="Email Address" name="email"
                            onChange={handleChange}
                            className="w-[220px] border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
-                    {formData.password && <PasswordViewer visible={passA} setVisible={setPassA}/>}
+                </div>
+                <div className="w-full flex flex-col relative">
+                    {isVisible("password") && getLabel("password")}
+                    <input type={passViewer.password ? "text" : "password"} placeholder="Password" name="password"
+                           onChange={handleChange}
+                           className="w-[220px] border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
+                    {formData.password &&
+                        <PasswordViewer visible={passViewer} setVisible={setPassViewer} name="password"/>}
                 </div>
                 <button
                     type="submit"
                     className="py-2 px-10 mt-4 bg-dark-blue text-white font-[500] tracking-wider transition-all border-2 border-dark-blue hover:bg-white hover:text-dark-blue">SUBMIT
                 </button>
-                <p className="text-sm mt-1">Don't have an account? <Link to="/signup" className="underline text-dark-blue">Sign Up</Link></p>
+                <p className="text-sm mt-1">Don't have an account? <Link to="/signup"
+                                                                         className="underline text-dark-blue">Sign
+                    Up</Link></p>
             </form>
-            {popup.state && <Popup data={popup}/>}
+            {popup.state && getView()}
+            {loading && <Loading />}
         </>
     )
 }

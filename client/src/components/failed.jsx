@@ -1,8 +1,11 @@
-const Failed = () => {
+import {FaCircleXmark} from "react-icons/fa6";
+
+const Failed = ({message}) => {
     return (
-        <section className="w-full h-screen absolute bg-black/80 flex justify-center items-center">
-            <div className="p-16 bg-white rounded-2xl">
-                <h1 className="text-2xl text-red-500 font-bold">Failed</h1>
+        <section className="w-full h-screen absolute top-0 left-0 bg-black/80 flex justify-center items-center">
+            <div className="p-16 bg-white rounded-2xl flex flex-col justify-center items-center">
+                <FaCircleXmark className="w-16 h-16 text-red-500"/>
+                <h1 className="text-2xl text-red-500 font-bold mt-3">{message}</h1>
             </div>
         </section>
     )

@@ -17,6 +17,10 @@ const db = mysql.createConnection({
     database: 'voters'
 });
 
+const messages = {
+
+}
+
 const initVotersTables = () => {
     const sql = (
         `CREATE TABLE IF NOT EXISTS voters (
@@ -55,14 +59,14 @@ app.post('/register', (req, res) => {
     table.findOne({email}, (result) => {
         // Check if email already exist
         if(result) {
-            return res.json(false);
+            return res.json({status: false, message: "GSuite was already registered"});
         }
 
         let datas = {student_id ,firstname, lastname, course, year, email, password, department};
 
         hashPassword(password, (hash) => {
             table.insert({...datas, password: hash}, (result) => {
-                return res.json(true);
+                return res.json({status: true, message: "Registration success"});
             })
         })
     })
@@ -73,12 +77,25 @@ app.post('/login', (req, res) => {
     const {email, password} = req.body;
     let table = new DataTable(db, "voters");
     table.findOne({email}, (result) => {
+        if(!result) {
+            return res.json({
+                status: false,
+                message: "GSuite not registered"
+            });
+        }
         bcrypt.compare(password, result.password, (error, data) => {
             if(error) throw error;
-            return res.json({data: data ? result : false});
+            let form = {
+                status: false,
+                message: "Invalid Password"
+            }
+            if(data) {
+                form = {status: true, data: result, message: "Login successfully"};
+            }
+            return res.json(form);
         })
     })
 });
 
 
-app.listen(8081, () => console.log("Server has been enabled"))
+app.listen(8081,() => console.log("Server has been enabled"))

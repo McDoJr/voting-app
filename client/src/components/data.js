@@ -45,37 +45,37 @@ export const validateForm = (formData) => {
     for(const key in formData) {
         const value = formData[key];
         if(!value && key === 'firstname') {
-            errors.firstname = "First Name is required!";
+            errors.firstname = "Required!";
         }
         if(!value && key === 'lastname') {
-            errors.lastname = "Last Name is required!";
+            errors.lastname = "Required!";
         }
         if(!value && key === 'email') {
-            errors.email = "Email is required!";
+            errors.email = "Required!";
         }
         if(value && key === 'email' && !emailFormat.test(value)) {
-            errors.email = "Invalid email format!";
+            errors.email = "Invalid Email!";
         }
         if(!value && key === 'password') {
-            errors.password = "Password is required!";
+            errors.password = "Required!";
         }
         if(!value && key === 'confirm_password') {
-            errors.confirm_password = "Confirm Password is required!";
+            errors.confirm_password = "Required!";
         }
         if(value && key === 'confirm_password' && value !== formData['password']) {
             errors.confirm_password = "Password dont match!";
         }
         if(!value && key === 'course') {
-            errors.course = "Course is required!";
+            errors.course = "Required!";
         }
         if(!value && key === 'department') {
-            errors.department = "Department is required!";
+            errors.department = "Required!";
         }
         if(!value && key === 'year') {
-            errors.year = "Year is required!";
+            errors.year = "Required!";
         }
-        if(!value && key === 'id_number') {
-            errors.id_number = "ID number is required!";
+        if(!value && key === 'student_id') {
+            errors.student_id = "Required!";
         }
     }
 

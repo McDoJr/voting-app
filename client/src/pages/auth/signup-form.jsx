@@ -1,8 +1,10 @@
-import {form, validate} from "../../components/data.js";
+import {courses, signupForm, validate, validateForm} from "../../components/data.js";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import Popup from "../../components/popup.jsx";
+import PasswordViewer from "../../components/password-viewer.jsx";
+import Logo from "../../assets/fsuu_logo.png";
 
 const SignupForm = () => {
 
@@ -11,95 +13,124 @@ const SignupForm = () => {
         state: false,
         status: false
     });
-    const {formData, setFormData, handleChange} = form({
-        firstname: "",
-        lastname: "",
-        course: "",
-        year: "",
-        department: "",
-        email: "",
-        password: "",
-        confirm_password: ""
-    });
+    const [passA, setPassA] = useState(false);
+    const [passB, setPassB] = useState(false);
+    // const {formData: errors, setFormData: setErrors} = signupForm();
+    const [errors, setErrors] = useState({});
+    const {formData, setFormData, handleChange} = signupForm();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(validate(formData)) {
-            alert("Fill out all fields!");
-            return
+        const errors = validateForm(formData);
+        if(Object.keys(errors).length > 0) {
+            setErrors(errors);
+        }else {
+            setErrors({});
+            axios.post('http://localhost:8081/register', formData)
+                .then(res => {
+                    if(res.data) {
+                        setPopup({state: true, status: true});
+                        setTimeout(() => {
+                            setPopup({state: false, status: false});
+                            navigate("/signin");
+                        }, 1500);
+                    } else {
+                        setPopup({state: true, status: false});
+                        setTimeout(() => setPopup({state: false, status: false}), 1500);
+                    }
+                })
+                .catch(console.log);
         }
-        if(formData.password !== formData.confirm_password) {
-            return;
-        }
-        axios.post('http://localhost:8081/register', formData)
-            .then(res => {
-                if(res.data) {
-                    setPopup({state: true, status: true});
-                    setTimeout(() => {
-                        setPopup({state: false, status: false});
-                        navigate("/signin");
-                    }, 1500);
-                } else {
-                    setPopup({state: true, status: false});
-                    setTimeout(() => setPopup({state: false, status: false}), 1500);
-                }
-            })
-            .catch(console.log);
     }
 
     return (
         <>
             <form
                 onSubmit={handleSubmit}
-                className="flex flex-col justify-center items-center bg-white py-6 px-16 my-auto rounded-md shadow-lg shadow-gray-700">
+                className="flex flex-col select-none justify-center items-center bg-white py-6 px-10 my-auto rounded-md shadow-lg shadow-gray-700">
                 <h1 className="text-3xl font-bold text-dark-blue mb-6">SIGN UP</h1>
                 <div className="flex w-full">
-                    <input type="text" placeholder="First Name" name="firstname"
-                           onChange={handleChange}
-                           className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 mr-3 outline-1 outline-dark-blue"/>
-                    <input type="text" placeholder="Last Name" name="lastname"
-                           onChange={handleChange}
-                           className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
+                    <div className="w-full mr-3 flex flex-col">
+                        <label htmlFor="" className="text-[12px] text-red-600">ss</label>
+                        <input type="text" placeholder="Student ID" name="student_id"
+                               onChange={handleChange}
+                               className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-1 outline-1 outline-dark-blue"/>
+                    </div>
+                    <div className="w-full mr-3 flex flex-col">
+                        <label htmlFor="" className="text-[12px] text-red-600">Student ID</label>
+                        <input type="text" placeholder="First Name" name="firstname"
+                               onChange={handleChange}
+                               className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-1 mr-3 outline-1 outline-dark-blue"/>
+                    </div>
+                    <div className="w-full flex flex-col">
+                        <label htmlFor="" className="text-[12px] text-red-600">Student ID</label>
+                        <input type="text" placeholder="Last Name" name="lastname"
+                               onChange={handleChange}
+                               className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-1 outline-1 outline-dark-blue"/>
+                    </div>
                 </div>
                 <div className="flex w-full">
-                    <input type="text" placeholder="Course" name="course"
-                           onChange={handleChange}
-                           className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 mr-3 outline-1 outline-dark-blue"/>
-                    <select name="year"
-                            onChange={handleChange}
-                            className={`w-full border border-gray-400 px-4 py-1.5 text-sm ${formData.year ? 'text-dark-blue' : 'text-placeholder'} rounded-md mb-3 outline-1 outline-dark-blue`}>
-                        <option hidden>Year</option>
-                        <option value="1" className="text-dark-blue">I</option>
-                        <option value="2" className="text-dark-blue">II</option>
-                        <option value="3" className="text-dark-blue">III</option>
-                        <option value="4" className="text-dark-blue">IV</option>
-                    </select>
+                    <div className="w-full mr-3 flex flex-col">
+                        <label htmlFor="" className="text-[12px] text-red-600">Student ID</label>
+                        <select name="department"
+                                onChange={handleChange}
+                                className={`w-full cursor-pointer border border-gray-400 px-4 py-1.5 text-sm ${formData.department ? 'text-dark-blue' : 'text-placeholder'} rounded-md mb-1 mr-3 outline-1 outline-dark-blue`}>
+                            <option hidden>Department</option>
+                            <option value="ETP" className="text-dark-blue">ETP</option>
+                            <option value="CSP" className="text-dark-blue">CSP</option>
+                            <option value="NP" className="text-dark-blue">NP</option>
+                            <option value="CJEP" className="text-dark-blue">CJEP</option>
+                            <option value="BAP" className="text-dark-blue">BAP</option>
+                            <option value="AP" className="text-dark-blue">AP</option>
+                            <option value="TEP" className="text-dark-blue">TEP</option>
+                            <option value="ASP" className="text-dark-blue">ASP</option>
+                        </select>
+                    </div>
+                    <div className="w-full mr-3 flex flex-col">
+                        <label htmlFor="" className="text-[12px] text-red-600">Student ID</label>
+                        <select name="course"
+                                onChange={handleChange}
+                                className={`w-full border border-gray-400 px-4 py-1.5 text-sm ${formData.course ? 'text-dark-blue' : 'text-placeholder'} rounded-md mb-1 mr-3 outline-1 outline-dark-blue ${formData.department ? 'cursor-pointer' : 'pointer-events-none'}`}>
+                            <option hidden>Course</option>
+                            {formData.department && courses(formData.department).map((data, index) => {
+                                return <option value={data} className="text-dark-blue" key={index}>{data}</option>
+                            })}
+                        </select>
+                    </div>
+                    <div className="w-full flex flex-col">
+                        <label htmlFor="" className="text-[12px] text-red-600">Student ID</label>
+                        <select name="year"
+                                onChange={handleChange}
+                                className={`w-full cursor-pointer border border-gray-400 px-4 py-1.5 text-sm ${formData.year ? 'text-dark-blue' : 'text-placeholder'} rounded-md mb-1 outline-1 outline-dark-blue`}>
+                            <option hidden>Year</option>
+                            <option value="1" className="text-dark-blue">I</option>
+                            <option value="2" className="text-dark-blue">II</option>
+                            <option value="3" className="text-dark-blue">III</option>
+                            <option value="4" className="text-dark-blue">IV</option>
+                        </select>
+                    </div>
                 </div>
                 <div className="flex w-full">
-                    <select name="department"
-                            onChange={handleChange}
-                            className={`w-full border border-gray-400 px-4 py-1.5 text-sm ${formData.department ? 'text-dark-blue' : 'text-placeholder'} rounded-md mb-3 mr-3 outline-1 outline-dark-blue`}>
-                        <option hidden>Department</option>
-                        <option value="ETP" className="text-dark-blue">ETP</option>
-                        <option value="CSP" className="text-dark-blue">CSP</option>
-                        <option value="NP" className="text-dark-blue">NP</option>
-                        <option value="CJEP" className="text-dark-blue">CJEP</option>
-                        <option value="BAP" className="text-dark-blue">BAP</option>
-                        <option value="AP" className="text-dark-blue">AP</option>
-                        <option value="TEP" className="text-dark-blue">TEP</option>
-                        <option value="ASP" className="text-dark-blue">ASP</option>
-                    </select>
-                    <input type="text" placeholder="GSuite Email" name="email"
-                           onChange={handleChange}
-                           className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
-                </div>
-                <div className="flex w-full">
-                    <input type="password" placeholder="Password" name="password"
-                           onChange={handleChange}
-                           className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 mr-3 outline-1 outline-dark-blue"/>
-                    <input type="password" placeholder="Confirm Password" name="confirm_password"
-                           onChange={handleChange}
-                           className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
+                    <div className="w-full mr-3 flex flex-col">
+                        <label htmlFor="" className="text-[12px] text-red-600">Student ID</label>
+                        <input type="text" placeholder="GSuite Email" name="email"
+                               onChange={handleChange}
+                               className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
+                    </div>
+                    <div className="w-full mr-3 relative flex flex-col">
+                        <label htmlFor="" className="text-[12px] text-red-600">Student ID</label>
+                        <input type={passA ? "text" : "password"} placeholder="Password" name="password"
+                               onChange={handleChange}
+                               className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
+                        {formData.password && <PasswordViewer visible={passA} setVisible={setPassA}/>}
+                    </div>
+                    <div className="w-full relative flex flex-col">
+                        <label htmlFor="" className="text-[12px] text-red-600">Student ID</label>
+                        <input type={passB ? "text" : "password"} placeholder="Confirm Password" name="confirm_password"
+                               onChange={handleChange}
+                               className="w-full border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
+                        {formData.confirm_password && <PasswordViewer visible={passB} setVisible={setPassB}/>}
+                    </div>
                 </div>
                 <button
                     type="submit"

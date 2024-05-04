@@ -20,7 +20,7 @@ const db = mysql.createConnection({
 const initVotersTables = () => {
     const sql = (
         `CREATE TABLE IF NOT EXISTS voters (
-            voters_id int not null AUTO_INCREMENT,
+            student_id varchar(255) not null,
             firstname varchar(255) not null,
             lastname varchar(255) not null,
             course varchar(255) not null,
@@ -28,8 +28,8 @@ const initVotersTables = () => {
             email varchar(255) not null,
             password varchar(255) not null,
             department varchar(255) not null,
-            PRIMARY KEY (voters_id)
-         ) AUTO_INCREMENT=1000`
+            PRIMARY KEY (student_id)
+         )`
     )
 
     db.query(sql, (error) => {
@@ -49,8 +49,8 @@ const hashPassword = (password, callback) => {
 
 app.post('/register', (req, res) => {
     initVotersTables();
-    const { firstname, lastname, course, year, email, password, department } = req.body;
-    const values = [firstname, lastname, course, year, email, password, department];
+    const { student_id, firstname, lastname, course, year, email, password, department } = req.body;
+    const values = [student_id, firstname, lastname, course, year, email, password, department];
     let table = new DataTable(db, "voters");
     table.findOne({email}, (result) => {
         // Check if email already exist
@@ -58,7 +58,7 @@ app.post('/register', (req, res) => {
             return res.json(false);
         }
 
-        let datas = {firstname, lastname, course, year, email, password, department};
+        let datas = {student_id ,firstname, lastname, course, year, email, password, department};
 
         hashPassword(password, (hash) => {
             table.insert({...datas, password: hash}, (result) => {

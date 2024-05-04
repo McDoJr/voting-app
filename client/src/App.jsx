@@ -1,7 +1,5 @@
 import {DataContext} from "./utils/context.js";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import RegistrationPage from "./pages/auth/registration-page.jsx";
-import LoginPage from "./pages/auth/login-page.jsx";
 import {form} from "./components/data.js";
 import SignupPage from "./pages/auth/signup-page.jsx";
 import SigninPage from "./pages/auth/signin-page.jsx";
@@ -16,8 +14,6 @@ const App = () => {
             <BrowserRouter>
                 <Routes>
                     <Route index element={<SigninPage/>}/>
-                    <Route path="/register" element={<RegistrationPage/>}/>
-                    <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/signup" element={<SignupPage/>}/>
                     <Route path="/signin" element={<SigninPage/>}/>
                 </Routes>

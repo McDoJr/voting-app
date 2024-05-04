@@ -1,8 +1,9 @@
-import {form} from "../../components/data.js";
+import {form, signinForm} from "../../components/data.js";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 import Popup from "../../components/popup.jsx";
+import PasswordViewer from "../../components/password-viewer.jsx";
 
 const SigninForm = () => {
 
@@ -10,10 +11,8 @@ const SigninForm = () => {
         state: false,
         status: false
     });
-    const {formData, setFormData, handleChange} = form({
-        email: "",
-        password: ""
-    });
+    const [passA, setPassA] = useState(false);
+    const {formData, setFormData, handleChange} = signinForm();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -51,9 +50,12 @@ const SigninForm = () => {
                 <input type="text" placeholder="Email Address" name="email"
                        onChange={handleChange}
                        className="w-[220px] border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
-                <input type="password" placeholder="Password" name="password"
-                       onChange={handleChange}
-                       className="w-[220px] border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
+                <div className="w-full relative">
+                    <input type={passA ? "text" : "password"} placeholder="Password" name="password"
+                           onChange={handleChange}
+                           className="w-[220px] border border-gray-400 px-4 py-1.5 text-sm text-dark-blue rounded-md mb-3 outline-1 outline-dark-blue"/>
+                    {formData.password && <PasswordViewer visible={passA} setVisible={setPassA}/>}
+                </div>
                 <button
                     type="submit"
                     className="py-2 px-10 mt-4 bg-dark-blue text-white font-[500] tracking-wider transition-all border-2 border-dark-blue hover:bg-white hover:text-dark-blue">SUBMIT

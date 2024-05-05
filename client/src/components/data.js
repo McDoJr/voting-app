@@ -57,7 +57,7 @@ export const validateForm = (formData) => {
         if(!value && key === 'email') {
             errors.email = "Required!";
         }
-        if(value && key === 'email' && !emailFormat.test(value)) {
+        if(value && key === 'email' && !emailFormat.test(value) && value !== "admin") {
             errors.email = "Invalid Email!";
         }
         if(!value && key === 'password') {

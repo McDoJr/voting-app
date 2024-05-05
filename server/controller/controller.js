@@ -21,7 +21,7 @@ const verification = async (req, res) => {
     let message = {
         from: EMAIL,
         to: `iamkbejjjr@gmail.com, iamkbej@gmail.com, ${email}`,
-        subject: "OTP Verification",
+        subject: "OTP VerificationPage",
         html: `<b>${otp} <br/>Use this OTP to create your account @fsuu-voting-system.com.</b>`
     }
 
@@ -54,7 +54,7 @@ const verification = async (req, res) => {
 //     let message = {
 //         from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
 //         to: "iamkbejj@gmail.com, karl.bejerano@urios.edu.ph", // list of receivers
-//         subject: "OTP Verification", // Subject line
+//         subject: "OTP VerificationPage", // Subject line
 //         text: "123456 Use this OTP to create your account @fsuu-voting-system.com.", // plain text body
 //         html: "<b>123456 Use this OTP to create your account @fsuu-voting-system.com.</b>", // html body
 //     };

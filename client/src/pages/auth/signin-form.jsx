@@ -1,6 +1,6 @@
 import {form, signinForm, validateForm} from "../../components/data.js";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {popupForm} from "../../components/popup.jsx";
 import PasswordViewer from "../../components/password-viewer.jsx";
@@ -11,6 +11,7 @@ import {HOST} from "../../hooks/auth-hooks.js";
 
 const SigninForm = () => {
 
+    const navigate = useNavigate();
     const {popup, setPopup, handlePopup, getView, closePopup} = popupForm();
     const [loading, setLoading] = useState(false);
     const [passViewer, setPassViewer] = useState({password: false});
@@ -33,7 +34,10 @@ const SigninForm = () => {
             if(email === "admin") {
                 if(password === "1234") {
                     handlePopup(true, true, "Login successfully!");
-                    setTimeout(() => closePopup(), 1500);
+                    setTimeout(() => {
+                        closePopup();
+                        navigate("/admin/dashboard");
+                    }, 1500);
                 } else {
                     handlePopup(true, false, "Invalid admin password!");
                     setTimeout(() => closePopup(), 1500);

@@ -16,7 +16,8 @@ export default {
       fontFamily: {
         inter: "Inter",
         consolas: "Consolas",
-        prompt: "Prompt"
+        prompt: "Prompt",
+        poppins: "Poppins"
       },
       backgroundImage: {
         "fsuu-bg": "url('/src/assets/fsuu_bg.png')",

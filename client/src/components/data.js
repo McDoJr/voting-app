@@ -6,7 +6,10 @@ export const form = (data = {}) => {
 
     const handleChange = (e) => {
         const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
+        if(name === "student_id" && !/[0-9]/.test(value.charAt(value.length - 1))) {
+            return;
+        }
+        setFormData({...formData, [name]: name === "terms" ? e.target.checked : value});
     }
 
     return {formData, setFormData, handleChange};
@@ -22,7 +25,8 @@ export const signupForm = () => {
         department: "",
         email: "",
         password: "",
-        confirm_password: ""
+        confirm_password: "",
+        terms: false
     });
 }
 
@@ -82,8 +86,8 @@ export const validateForm = (formData) => {
     return errors;
 }
 
-export const courses = (department) => {
-    const datas = {
+export const departments = () => {
+    return {
         CSP: ['BSIT', 'BSCS', 'BSIT-CA', 'BLISS'],
         ASP: ['BSAS'],
         TEP: ['BSEE', 'BSSE', 'DEPED'],
@@ -93,6 +97,8 @@ export const courses = (department) => {
         AP: ['BSA'],
         BAP: ['BSBA'],
     }
+}
 
-    return datas[department];
+export const courses = (department) => {
+    return departments()[department];
 }

@@ -45,6 +45,10 @@ const SigninForm = () => {
                         if(status) {
                             handlePopup(true, true, message);
                             setTimeout(() => closePopup(), 1500);
+                            axios.post(`${HOST}/api/user/otp`, formData)
+                                .then(result => {
+                                    console.log(result);
+                                })
                         } else {
                             handlePopup(true, false, message);
                             setTimeout(() => closePopup(), 1500);

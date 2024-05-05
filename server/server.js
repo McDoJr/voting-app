@@ -4,11 +4,14 @@ const bcrypt = require("bcrypt");
 const cors = require('cors');
 const {query} = require("express");
 const DataTable = require("./data-query.js");
+const route = require('./routes/route.js');
 const saltRounds = 10;
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.use('/api', route);
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -50,6 +53,19 @@ const hashPassword = (password, callback) => {
         return callback(hash);
     })
 }
+
+app.post('/signup', (req, res) => {
+    initVotersTables();
+    const { student_id, firstname, lastname, course, year, email, password, department } = req.body;
+    const values = [student_id, firstname, lastname, course, year, email, password, department];
+    let table = new DataTable(db, "voters");
+    table.findOne({email}, result => {
+        if(result) {
+            return res.json({status: false, message: "GSuite was already registered"});
+        }
+        return res.json({status: true, message: "Proceed to verification"});
+    })
+})
 
 app.post('/register', (req, res) => {
     initVotersTables();

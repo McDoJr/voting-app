@@ -22,5 +22,6 @@ export const errorForm = () => {
         return Object.keys(errors).length > 0 && errors[name];
     }
 
+
     return {errors, setErrors, checkErrors, getLabel, isVisible};
 }

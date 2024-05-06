@@ -8,10 +8,12 @@ import Logo from "../../assets/fsuu_logo.png";
 import {errorForm} from "../../components/error.jsx";
 import {HOST} from "../../hooks/auth-hooks.js";
 import Loading from "../../components/loading.jsx";
+import TermsAndCondition from "../../components/terms-and-condition.jsx";
 
 const SignupForm = () => {
 
     const navigate = useNavigate();
+    const [view, setView] = useState(false);
     const {popup, setPopup, handlePopup, getView, closePopup} = popupForm();
     const [passViewer, setPassViewer] = useState({
         password: false,
@@ -26,6 +28,12 @@ const SignupForm = () => {
     const handleChange = (e) => {
         onChange(e);
         checkErrors(e.target.name);
+    }
+
+    const handleAgreeAndClose = () => {
+        document.getElementById("terms").checked = true;
+        setView(false);
+        setFormData({...formData, terms: true})
     }
 
     const handleSubmit = (e) => {
@@ -143,8 +151,8 @@ const SignupForm = () => {
                     </div>
                 </div>
                 <div className="flex items-center self-start">
-                    <input type="checkbox" className="text-sm mr-2" name="terms" value={formData.terms} onChange={handleChange}/>
-                    <label htmlFor="" className="text-[12px]">I agree to the <span className="text-[12px] text-blue-600 underline">Terms and Conditions</span></label>
+                    <input type="checkbox" className="text-sm mr-2" id="terms" name="terms" value={formData.terms} onChange={handleChange}/>
+                    <label htmlFor="" className="text-[12px]">I agree to the <span className="text-[12px] text-blue-600 cursor-pointer underline" onClick={() => setView(true)}>Terms and Conditions</span></label>
                 </div>
                 <button
                     type="submit"
@@ -154,6 +162,7 @@ const SignupForm = () => {
             </form>
             {loading && <Loading />}
             {popup.state && getView()}
+            {view && <TermsAndCondition setView={setView} handleAgreeAndClose={handleAgreeAndClose}/>}
         </>
     )
 }

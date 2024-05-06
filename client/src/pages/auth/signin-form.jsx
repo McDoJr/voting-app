@@ -34,6 +34,7 @@ const SigninForm = () => {
             if(email === "admin") {
                 if(password === "1234") {
                     handlePopup(true, true, "Login successfully!");
+                    localStorage.setItem("user", 'true');
                     setTimeout(() => {
                         closePopup();
                         navigate("/admin/dashboard");

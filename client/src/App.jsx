@@ -5,6 +5,7 @@ import SignupPage from "./pages/auth/signup-page.jsx";
 import SigninPage from "./pages/auth/signin-page.jsx";
 import VerificationPage from "./pages/auth/verification-page.jsx";
 import DashboardPage from "./pages/dashboard/dashboard-page.jsx";
+import PrivateRoutes from "./routes/private-routes.jsx";
 
 
 const App = () => {
@@ -19,7 +20,9 @@ const App = () => {
                     <Route path="/signup" element={<SignupPage/>}/>
                     <Route path="/signin" element={<SigninPage/>}/>
                     <Route path="/signup/otp" element={<VerificationPage/>}/>
-                    <Route path="/admin/dashboard" element={<DashboardPage/>}/>
+                    <Route element={<PrivateRoutes/>}>
+                        <Route path="/admin/dashboard" element={<DashboardPage/>}/>
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </DataContext.Provider>

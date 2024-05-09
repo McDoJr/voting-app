@@ -6,7 +6,7 @@ export const form = (data = {}) => {
 
     const handleChange = (e) => {
         const {name, value} = e.target;
-        if(name === "student_id" && !/[0-9]/.test(value.charAt(value.length - 1))) {
+        if(value && name === "student_id" && !/[0-9]/.test(value.charAt(value.length - 1))) {
             return;
         }
         setFormData({...formData, [name]: name === "terms" ? e.target.checked : value});

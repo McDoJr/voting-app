@@ -13,4 +13,4 @@ export const authData = () => {
     return { loggedIn, getData };
 }
 
-export const HOST = "http://192.168.1.9:8081";
+export const HOST = "http://localhost:8081";

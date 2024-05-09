@@ -39,14 +39,14 @@ const DashboardContents = () => {
 
     return (
         <section className="w-full h-full bg-white flex flex-col">
-            <div className="flex p-8">
+            <div className="flex px-8 py-4">
                 <div className="flex flex-col">
                     <div className="flex items-center mb-10">
-                        <img src={Logo} alt="" className="w-[100px]"/>
-                        <img src={getLogo(department)} alt="" className="w-[90px]"/>
+                        <img src={Logo} alt="" className="w-[80px]"/>
+                        <img src={getLogo(department)} alt="" className="w-[70px]"/>
                         <div className="flex flex-col ml-5">
-                            <h1 className="text-5xl font-bold">Dashboard</h1>
-                            <p className="text-[18px] ml-0.5">{currentDate()}</p>
+                            <h1 className="text-3xl font-bold">Dashboard</h1>
+                            <p className="text-[16px] ml-0.5">{currentDate()}</p>
                         </div>
                         <select name="" id=""
                                 onChange={handleChange}
@@ -58,25 +58,25 @@ const DashboardContents = () => {
                     </div>
                     <DashboardRecords/>
                 </div>
-                <div className="h-[260px] ml-auto p-3 flex flex-col border border-dark-blue rounded-md">
+                <div className="h-[240px] ml-auto p-3 flex flex-col border border-dark-blue rounded-md">
                     <h5 className="mb-4 font-[500]">Recently Voted</h5>
-                    <p className="tracking-wide">11111111111 user voted</p>
-                    <p className="tracking-wide">22222222222 user voted</p>
-                    <p className="tracking-wide">33333333333 user voted</p>
-                    <p className="tracking-wide">44444444444 user voted</p>
-                    <p className="tracking-wide">55555555555 user voted</p>
-                    <p className="tracking-wide">66666666666 user voted</p>
-                    <p className="tracking-wide">77777777777 user voted</p>
-                    <p className="tracking-wide">88888888888 user voted</p>
+                    <p className="tracking-wide text-sm">11111111111 user voted</p>
+                    <p className="tracking-wide text-sm">22222222222 user voted</p>
+                    <p className="tracking-wide text-sm">33333333333 user voted</p>
+                    <p className="tracking-wide text-sm">44444444444 user voted</p>
+                    <p className="tracking-wide text-sm">55555555555 user voted</p>
+                    <p className="tracking-wide text-sm">66666666666 user voted</p>
+                    <p className="tracking-wide text-sm">77777777777 user voted</p>
+                    <p className="tracking-wide text-sm">88888888888 user voted</p>
                 </div>
             </div>
             <div className="w-full flex justify-between">
                 <DashboardVotes data={getData("executive")}/>
                 <DashboardVotes data={getData("local")}/>
             </div>
-            <div className="w-full flex justify-around items-center mx-auto mt-3">
-                <FaCaretLeft className="text-5xl text-dark-blue" onClick={previous}/>
-                <FaCaretRight className="text-5xl text-dark-blue" onClick={next}/>
+            <div className="w-full flex justify-around items-center mx-auto">
+                <FaCaretLeft className="text-5xl text-dark-blue cursor-pointer" onClick={previous}/>
+                <FaCaretRight className="text-5xl text-dark-blue cursor-pointer" onClick={next}/>
             </div>
         </section>
     )

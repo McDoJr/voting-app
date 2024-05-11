@@ -21,3 +21,7 @@ export const getLogo = (department) => {
 
     return logos[department.toLowerCase()];
 }
+
+export const format = (name) => {
+    return name.substring(0, 1).toUpperCase() + name.substring(1);
+}

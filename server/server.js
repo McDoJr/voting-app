@@ -71,7 +71,9 @@ app.post('/register', (req, res) => {
     initVotersTables();
     const { student_id, firstname, lastname, course, year, email, password, department } = req.body;
     const values = [student_id, firstname, lastname, course, year, email, password, department];
-    let table = new DataTable(db, "voters");
+
+    let table = new DataTable(db, "voters"); // voters kay name sa table
+
     table.findOne({email}, (result) => {
         // Check if email already exist
         if(result) {
